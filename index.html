@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oma musiikkikirjasto</title>
+<meta name="theme-color" content="#003366">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<main id="sovellus">
+
+  <section id="nakyma-aloitus">
+    <button id="nappi-hae" type="button">Hae levy</button>
+    <button id="nappi-lisaa" type="button">Lisää uusi levy</button>
+    <button id="nappi-asetukset" type="button">Asetukset</button>
+  </section>
+
+  <section id="nakyma-haku" hidden>
+    <button id="haku-takaisin" type="button">Takaisin</button>
+    <label for="hakukentta">Haku</label>
+    <input id="hakukentta" type="search" autocomplete="off" autocapitalize="off">
+    <ul id="hakutulokset"></ul>
+  </section>
+
+  <section id="nakyma-tietosivu" hidden>
+    <button id="tieto-takaisin" type="button">Takaisin</button>
+    <h1 id="tieto-otsikko" tabindex="-1"></h1>
+    <label for="tieto-esittaja">Esittäjä</label>
+    <input id="tieto-esittaja" type="text" autocomplete="off">
+    <label for="tieto-nimi">Levyn nimi</label>
+    <input id="tieto-nimi" type="text" autocomplete="off">
+    <label for="tieto-genre">Genre</label>
+    <input id="tieto-genre" type="text" autocomplete="off">
+    <label for="tieto-muistiinpanot">Muistiinpanot</label>
+    <textarea id="tieto-muistiinpanot" rows="4"></textarea>
+    <button id="tieto-tallenna" type="button">Tallenna</button>
+    <button id="tieto-poista" type="button">Poista levy</button>
+  </section>
+
+  <section id="nakyma-lisays" hidden>
+    <button id="lisays-takaisin" type="button">Takaisin</button>
+    <h1 id="lisays-otsikko" tabindex="-1"></h1>
+    <button id="lisays-tunnista" type="button">Tunnista kuvasta</button>
+    <input id="lisays-kuva" type="file" accept="image/*" capture="environment" hidden>
+    <label for="lisays-esittaja">Esittäjä</label>
+    <input id="lisays-esittaja" type="text" autocomplete="off">
+    <label for="lisays-nimi">Levyn nimi</label>
+    <input id="lisays-nimi" type="text" autocomplete="off">
+    <label for="lisays-genre">Genre</label>
+    <input id="lisays-genre" type="text" autocomplete="off">
+    <label for="lisays-muistiinpanot">Muistiinpanot</label>
+    <textarea id="lisays-muistiinpanot" rows="4"></textarea>
+    <button id="lisays-tallenna" type="button">Tallenna</button>
+  </section>
+
+  <section id="nakyma-asetukset" hidden>
+    <button id="asetukset-takaisin" type="button">Takaisin</button>
+    <p id="avain-tila" tabindex="-1"></p>
+    <label for="avain-kentta">Uusi API-avain</label>
+    <input id="avain-kentta" type="password" autocomplete="off">
+    <button id="avain-tallenna" type="button">Tallenna avain</button>
+    <button id="avain-testaa" type="button">Testaa avain</button>
+    <button id="vie-nappi" type="button">Vie varmuuskopio</button>
+    <button id="tuo-nappi" type="button">Tuo varmuuskopio</button>
+    <input id="tuonti-tiedosto" type="file" accept=".txt,text/plain" hidden>
+  </section>
+
+</main>
+
+<div id="ilmoitus" aria-live="polite" class="piilotettu-visuaalisesti"></div>
+
+<div id="dialogi-tausta" hidden>
+  <div id="dialogi" role="alertdialog" aria-modal="true" aria-labelledby="dialogi-teksti">
+    <p id="dialogi-teksti"></p>
+    <button id="dialogi-ok" type="button"></button>
+    <button id="dialogi-peruuta" type="button">Peruuta</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

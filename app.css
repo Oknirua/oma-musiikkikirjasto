@@ -1,0 +1,104 @@
+* { box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, system-ui, sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin: 0;
+  padding: 16px;
+  background: #ffffff;
+  color: #111111;
+}
+
+h1 {
+  font-size: 1.5rem;
+  margin: 16px 0;
+}
+
+button {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  font-size: 1.25rem;
+  font-family: inherit;
+  margin: 12px 0;
+  padding: 12px;
+  background: #003366;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+}
+
+button:focus-visible {
+  outline: 4px solid #ff9500;
+  outline-offset: 2px;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+input, textarea {
+  display: block;
+  width: 100%;
+  font-size: 1.25rem;
+  font-family: inherit;
+  padding: 10px;
+  margin: 4px 0 8px;
+  border: 2px solid #333333;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #111111;
+}
+
+input:focus-visible, textarea:focus-visible {
+  outline: 4px solid #ff9500;
+  outline-offset: 1px;
+}
+
+#hakutulokset {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+
+#hakutulokset button {
+  background: #ffffff;
+  color: #111111;
+  border: 2px solid #003366;
+  text-align: left;
+}
+
+.piilotettu-visuaalisesti {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+#dialogi-tausta {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+#dialogi-tausta[hidden] {
+  display: none;
+}
+
+#dialogi {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 100%;
+}
