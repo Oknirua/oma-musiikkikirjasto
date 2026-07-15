@@ -14,24 +14,12 @@ const AVAIN_ASETUKSET = 'musiikkikirjasto_asetukset';
 
 // ---------- Tallennus ----------
 
-function suurinNumero(levyt) {
-  return levyt.reduce(function (suurin, l) {
-    return Math.max(suurin, Number(l.numero) || 0);
-  }, 0);
-}
-
 function lataaKirjasto() {
   try {
     const data = JSON.parse(localStorage.getItem(AVAIN_KIRJASTO));
-    if (data && Array.isArray(data.levyt)) {
-      // Vanha tallenne ilman laskuria: jatketaan suurimmasta käytetystä numerosta.
-      if (!Number.isInteger(data.viimeisinNumero) || data.viimeisinNumero < 0) {
-        data.viimeisinNumero = suurinNumero(data.levyt);
-      }
-      return data;
-    }
+    if (data && Array.isArray(data.levyt)) return data;
   } catch (e) { /* vioittunut data -> aloitetaan tyhjästä */ }
-  return { versio: 1, levyt: [], viimeisinNumero: 0 };
+  return { versio: 1, levyt: [] };
 }
 
 function lataaAsetukset() {
@@ -54,9 +42,12 @@ function tallennaAsetukset() {
 }
 
 function seuraavaNumero() {
-  // Numerointi jatkuu aina viimeksi käytetystä numerosta, myös jos levyjä on
-  // poistettu välistä; laskuri tallentuu kirjaston mukana pysyvästi.
-  return Math.max(kirjasto.viimeisinNumero, suurinNumero(kirjasto.levyt)) + 1;
+  // Uudelle levylle tarjotaan pienintä vapaata numeroa, jolloin poistetun
+  // levyn numero otetaan uusiokäyttöön ennen numerosarjan jatkamista.
+  const kaytossa = new Set(kirjasto.levyt.map(function (l) { return l.numero; }));
+  let n = 1;
+  while (kaytossa.has(n)) n++;
+  return n;
 }
 
 function uusiId() {
@@ -396,7 +387,6 @@ function viimeisteleUusiLevy(nimi) {
     genre: e('lisays-genre').value.trim(),
     muistiinpanot: e('lisays-muistiinpanot').value.trim()
   });
-  kirjasto.viimeisinNumero = Math.max(kirjasto.viimeisinNumero, lisayksenNumero);
   tallennaKirjasto();
   avaaAloitus();
 }
@@ -457,12 +447,7 @@ async function testaaAvain() {
 // ---------- Varmuuskopiointi ----------
 
 function vieVarmuuskopio() {
-  const rivit = [
-    'OMA MUSIIKKIKIRJASTO',
-    'Versio 1',
-    'Viimeisin numero: ' + Math.max(kirjasto.viimeisinNumero, suurinNumero(kirjasto.levyt)),
-    ''
-  ];
+  const rivit = ['OMA MUSIIKKIKIRJASTO', 'Versio 1', ''];
   kirjasto.levyt
     .slice()
     .sort(function (a, b) { return a.numero - b.numero; })
@@ -494,7 +479,6 @@ function jasennaVarmuuskopio(teksti) {
 
   const levyt = [];
   const numerot = new Set();
-  let viimeisinNumero = 0;
   let tietue = null;
   let muistiinpanotAuki = false;
 
@@ -527,11 +511,9 @@ function jasennaVarmuuskopio(teksti) {
       muistiinpanotAuki = false;
     } else if (!tietue) {
       if (rivi.trim() === '' || rivi.indexOf('Versio') === 0) continue;
-      if (rivi.indexOf('Viimeisin numero:') === 0) {
-        const arvo = Number(rivi.slice(17).trim());
-        if (Number.isInteger(arvo) && arvo >= 0) viimeisinNumero = arvo;
-        continue;
-      }
+      // Sovelluksen aiempi versio kirjoitti varmuuskopioon laskuririvin;
+      // hyväksytään se yhteensopivuuden vuoksi, mutta arvoa ei enää käytetä.
+      if (rivi.indexOf('Viimeisin numero:') === 0) continue;
       throw new Error('rivi');
     } else if (rivi.indexOf('Esittäjä:') === 0) {
       tietue.esittaja = rivi.slice(9).trim();
@@ -554,17 +536,17 @@ function jasennaVarmuuskopio(teksti) {
     }
   }
   paataTietue();
-  return { levyt: levyt, viimeisinNumero: Math.max(viimeisinNumero, suurinNumero(levyt)) };
+  return levyt;
 }
 
 function tuoVarmuuskopio(tiedosto) {
   const lukija = new FileReader();
   lukija.onload = function () {
     try {
-      const tulos = jasennaVarmuuskopio(String(lukija.result));
-      kirjasto = { versio: 1, levyt: tulos.levyt, viimeisinNumero: tulos.viimeisinNumero };
+      const levyt = jasennaVarmuuskopio(String(lukija.result));
+      kirjasto = { versio: 1, levyt: levyt };
       tallennaKirjasto();
-      ilmoita(tulos.levyt.length === 1 ? 'Tuotu 1 levy.' : 'Tuotu ' + tulos.levyt.length + ' levyä.');
+      ilmoita(levyt.length === 1 ? 'Tuotu 1 levy.' : 'Tuotu ' + levyt.length + ' levyä.');
     } catch (virhe) {
       ilmoita('Tuonti epäonnistui. Kirjastoa ei muutettu.');
     }
