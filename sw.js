@@ -1,6 +1,6 @@
 'use strict';
 
-const VALIMUISTI = 'musiikkikirjasto-v1';
+const VALIMUISTI = 'musiikkikirjasto-v3';
 const TIEDOSTOT = [
   './',
   './index.html',

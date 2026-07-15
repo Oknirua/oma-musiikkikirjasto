@@ -41,7 +41,9 @@ function tallennaAsetukset() {
   localStorage.setItem(AVAIN_ASETUKSET, JSON.stringify(asetukset));
 }
 
-function pieninVapaaNumero() {
+function seuraavaNumero() {
+  // Uudelle levylle tarjotaan pienintä vapaata numeroa, jolloin poistetun
+  // levyn numero otetaan uusiokäyttöön ennen numerosarjan jatkamista.
   const kaytossa = new Set(kirjasto.levyt.map(function (l) { return l.numero; }));
   let n = 1;
   while (kaytossa.has(n)) n++;
@@ -253,7 +255,7 @@ function poistaLevy() {
 let lisayksenNumero = null;
 
 function avaaLisays() {
-  lisayksenNumero = pieninVapaaNumero();
+  lisayksenNumero = seuraavaNumero();
   e('lisays-otsikko').textContent = 'Uusi levy. Numero ' + lisayksenNumero + '.';
   e('lisays-esittaja').value = '';
   e('lisays-nimi').value = '';
@@ -509,6 +511,9 @@ function jasennaVarmuuskopio(teksti) {
       muistiinpanotAuki = false;
     } else if (!tietue) {
       if (rivi.trim() === '' || rivi.indexOf('Versio') === 0) continue;
+      // Sovelluksen aiempi versio kirjoitti varmuuskopioon laskuririvin;
+      // hyväksytään se yhteensopivuuden vuoksi, mutta arvoa ei enää käytetä.
+      if (rivi.indexOf('Viimeisin numero:') === 0) continue;
       throw new Error('rivi');
     } else if (rivi.indexOf('Esittäjä:') === 0) {
       tietue.esittaja = rivi.slice(9).trim();
