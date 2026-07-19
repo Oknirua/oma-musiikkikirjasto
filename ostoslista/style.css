@@ -1,0 +1,145 @@
+/* Ostoslista — yksinkertainen, selkeä ja esteetön ulkoasu. */
+
+:root {
+  --tausta: #ffffff;
+  --teksti: #1c1c1c;
+  --korostus: #1a7f37;
+  --korostus-tumma: #145c28;
+  --reunus: #767676;
+  --rastittu: #595959;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tausta: #121212;
+    --teksti: #f2f2f2;
+    --korostus: #4cc06a;
+    --korostus-tumma: #7fd899;
+    --reunus: #9a9a9a;
+    --rastittu: #b0b0b0;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  padding: 1rem;
+  max-width: 40rem;
+  background: var(--tausta);
+  color: var(--teksti);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin: 0.5rem 0 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.lisays-rivi {
+  display: flex;
+  gap: 0.5rem;
+}
+
+input[type="text"] {
+  flex: 1;
+  min-height: 48px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.125rem; /* vähintään 16px, ettei iOS zoomaa */
+  color: var(--teksti);
+  background: var(--tausta);
+  border: 2px solid var(--reunus);
+  border-radius: 8px;
+}
+
+button {
+  min-height: 48px;
+  padding: 0.5rem 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--korostus);
+  border: 2px solid var(--korostus);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    color: #0c2513;
+  }
+}
+
+button:active {
+  background: var(--korostus-tumma);
+  border-color: var(--korostus-tumma);
+}
+
+.toiminnot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+#tila {
+  min-height: 1.5rem;
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+#tyhja {
+  margin: 1rem 0;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 48px;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--reunus);
+}
+
+li input[type="checkbox"] {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  accent-color: var(--korostus);
+}
+
+li label {
+  margin: 0;
+  font-weight: 400;
+  flex: 1;
+  padding: 0.5rem 0; /* suurentaa kosketusaluetta */
+  overflow-wrap: anywhere;
+}
+
+li.rastittu label {
+  text-decoration: line-through;
+  color: var(--rastittu);
+}
+
+/* Selkeä kohdistuksen korostus näppäimistö- ja VoiceOver-käyttöön */
+input:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--korostus);
+  outline-offset: 2px;
+}

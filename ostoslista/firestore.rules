@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Pääsy on rajattu vain tämän sovelluksen jaettuun listaan.
+    // Kaikki muu projektin data on kokonaan estetty.
+    match /lists/jaettu-lista-p7k2m9/items/{itemId} {
+      allow read: if true;
+      allow create: if request.resource.data.keys().hasOnly(['text', 'checked'])
+        && request.resource.data.text is string
+        && request.resource.data.text.size() >= 1
+        && request.resource.data.text.size() <= 500
+        && request.resource.data.checked == false;
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['checked'])
+        && request.resource.data.checked is bool;
+      allow delete: if true;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ostoslista</title>
+  <meta name="description" content="Kahden hengen jaettu ostoslista">
+  <meta name="theme-color" content="#1a7f37">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="icon" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Ostoslista">
+</head>
+<body>
+  <header>
+    <h1>Ostoslista</h1>
+  </header>
+
+  <main>
+    <form id="lisays-lomake">
+      <label for="uusi-tuote">Lisää tuote listalle</label>
+      <div class="lisays-rivi">
+        <input id="uusi-tuote" name="uusi-tuote" type="text" autocomplete="off"
+               maxlength="200" enterkeyhint="enter">
+        <button type="submit">Lisää</button>
+      </div>
+    </form>
+
+    <div class="toiminnot">
+      <button type="button" id="paivita">Päivitä lista</button>
+      <button type="button" id="poista-valitut">Poista valitut</button>
+    </div>
+
+    <p id="tila" role="status" aria-live="polite"></p>
+
+    <p id="tyhja" hidden>Lista on tyhjä.</p>
+    <ul id="lista" aria-label="Ostoslistan tuotteet"></ul>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
